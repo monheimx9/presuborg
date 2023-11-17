@@ -1,4 +1,7 @@
-use std::fs;
+use std::{
+    fs, io,
+    path::{Path, PathBuf},
+};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Specify the path to the directory
     let directory_path = "."; // Change this to your desired directory path
@@ -15,6 +18,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("File path: {}", file_path_str);
     }
+    let p = Path::new("/home/monheim/Downloads/");
+
+    let mut files2: Vec<String> = get_files(p)?
+        .into_iter()
+        .map(|s| s.to_string_lossy().into_owned())
+        .collect();
+    for f in files2.iter() {
+        println!("{f}");
+    }
+    files2.sort();
+    for f in files2.iter() {
+        println!("{f}");
+    }
+    // let _ = files2.into_iter().map(|s| println!("{s}"));
 
     Ok(())
+}
+
+fn get_files(dir: &Path) -> Result<Vec<PathBuf>, io::Error> {
+    Ok(fs::read_dir(dir)?
+        .filter(|f| f.is_ok())
+        .map(|f| f.unwrap().path())
+        .filter(|f| f.is_file())
+        .collect())
 }
