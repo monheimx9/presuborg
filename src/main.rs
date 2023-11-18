@@ -1,24 +1,16 @@
 use std::{
+    error::Error,
     fs, io,
     path::{Path, PathBuf},
 };
+
+use regex::{self, Regex};
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Specify the path to the directory
-    let directory_path = "."; // Change this to your desired directory path
-    let mut files: Vec<String> = Vec::new();
+    let season = "S01";
+    let tvdbid = "418183";
 
-    // Read the contents of the directory
-    let entries = fs::read_dir(directory_path)?;
-    // Iterate over the directory entries
-    for entry in entries {
-        // Get the file path as a string
-        let file_path = entry?.path();
-        let file_path_str = file_path.to_string_lossy().into_owned();
-        files.push(file_path_str.clone());
-
-        println!("File path: {}", file_path_str);
-    }
-    let p = Path::new("/home/monheim/Downloads/");
+    let p = Path::new("/home/monheim/Downloads/Bucchigire/French/");
 
     let mut files2: Vec<String> = get_files(p)?
         .into_iter()
@@ -32,7 +24,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("{f}");
     }
     // let _ = files2.into_iter().map(|s| println!("{s}"));
+    test_continuity(files2)?;
+    Ok(())
+}
 
+fn test_continuity(episodes: Vec<String>) -> Result<(), io::Error> {
+    let re = Regex::new(r".+\s(\d{2})\s.+").unwrap();
+    let mut index: u8 = 1;
+    for ep in episodes.iter() {
+        let curr = re.captures(ep).unwrap();
+        let curr0 = curr[1].parse::<u8>().unwrap();
+        if curr0 == index {
+            println!("hehe");
+        } else {
+            println!(":((((((");
+            panic!("hehe")
+        }
+        index += 1;
+    }
     Ok(())
 }
 
