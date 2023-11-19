@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     fs, io,
     path::{Path, PathBuf},
 };
@@ -48,7 +49,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     // let _ = files2.into_iter().map(|s| println!("{s}"));
     test_continuity(&files2)?;
-    rename_subs(&mut files2, param);
+    let mut file_renamed = files2.clone();
+    rename_subs(&mut file_renamed, param);
+
+    let mut episodes: HashMap<u8, FileName> = HashMap::new();
+
+    for (index, file) in files2.iter().enumerate() {
+        let old1 = file;
+        let new1 = &file_renamed[index];
+
+        episodes.insert(
+            (index + 1) as u8,
+            FileName {
+                old: old1,
+                new: new1,
+            },
+        );
+    }
 
     for f in files2.iter() {
         println!("{f}");
