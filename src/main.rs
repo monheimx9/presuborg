@@ -70,8 +70,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for f in files2.iter() {
         println!("{f}");
     }
+    let episodes_vec = Vec::from_iter(episodes.values());
+
+    rename_subtitle_files(&episodes_vec);
 
     Ok(())
+}
+
+fn rename_subtitle_files(subs: &Vec<&FileName>) {
+    for sub in subs.iter() {
+        fs::rename(sub.old, sub.new).unwrap();
+    }
 }
 
 fn rename_subs(subs: &mut [String], param: LesParam) {
