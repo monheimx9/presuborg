@@ -77,11 +77,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn rename_subs(subs: &mut [String], param: LesParam) {
     let mut i = 1;
     for sub in subs.iter_mut() {
+        let ext = detect_subtitle_extension(sub);
+        let lang = detect_subtitle_lang(sub);
         *sub = format!(
-            "S{}.E{:0>2}.[{}]-[{}]",
-            param.season, i, param.rel_group, param.track_name
+            "S{}.E{:0>2}.[{}]-[{}].{}.{}",
+            param.season, i, param.rel_group, param.track_name, lang, ext
         );
         i += 1;
+    }
+}
+
+fn detect_subtitle_extension(file_name: &str) -> &str {
+    match file_name {
+        x if x.contains(".ass") => "ass",
+        x if x.contains(".srt") => "srt",
+        _ => "ass",
+    }
+}
+
+fn detect_subtitle_lang(file_name: &str) -> &str {
+    match file_name {
+        x if x.contains(".fre.") | x.contains(".fr.") | x.contains(".fra") => "fr-FR",
+        x if x.contains(".eng.") | x.contains(".en.") => "en-US",
+        _ => "und",
     }
 }
 
