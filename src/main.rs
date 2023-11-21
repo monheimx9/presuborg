@@ -77,23 +77,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn rename_subtitle_files(subs: &Vec<&FileName>) {
+fn rename_subtitle_files(subs: &[&FileName]) {
     for sub in subs.iter() {
         fs::rename(sub.old, sub.new).unwrap();
     }
 }
 
-fn rename_subs(subs: &mut [String], param: LesParam) {
+fn rename_subs(subs: &mut [String], p: LesParam) {
     let mut i = 1;
     for sub in subs.iter_mut() {
         let ext = detect_subtitle_extension(sub);
         let lang = detect_subtitle_lang(sub);
+        let diry = format!("./{}/S{}/E{:0>2}/", p.tvdbid, p.season, i);
+        make_missing_dirs(&diry);
         *sub = format!(
-            "S{}.E{:0>2}.[{}]-[{}].{}.{}",
-            param.season, i, param.rel_group, param.track_name, lang, ext
+            "{}S{}.E{:0>2}.[{}]-[{}].{}.{}",
+            diry, p.season, i, p.rel_group, p.track_name, lang, ext
         );
         i += 1;
     }
+}
+
+fn make_missing_dirs(directory: &str) {
+    fs::create_dir_all(directory).unwrap();
 }
 
 fn detect_subtitle_extension(file_name: &str) -> &str {
