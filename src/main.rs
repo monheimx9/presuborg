@@ -5,6 +5,7 @@ use std::{
 };
 
 use regex::{self, Regex};
+use sevenz_rust::decompress_file;
 
 #[derive(Debug, Clone)]
 struct LesParam<'a> {
@@ -27,7 +28,7 @@ struct Episode<'a> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let p = Path::new("/home/monheim/Downloads/Bucchigire/French/");
+    let p = Path::new("/home/monheim/Downloads/Bucchigire/");
 
     let param = LesParam {
         rel_group: "Erai-raws",
@@ -35,6 +36,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         season: "01",
         track_name: "Français (France)",
     };
+
+    let archives = get_archive_files(p)?;
+    extract_archives(&archives)?;
 
     let mut files2: Vec<String> = get_files(p)?
         .into_iter()
@@ -144,9 +148,26 @@ fn get_files(dir: &Path) -> Result<Vec<PathBuf>, io::Error> {
 }
 
 fn get_archive_files(dir: &Path) -> Result<Vec<PathBuf>, io::Error> {
-    Ok(fs::read_dir(dir)?
-        .filter(|f| f.is_ok())
-        .map(|f| f.unwrap().path())
-        .filter(|f| f.ends_with("7z"))
-        .collect())
+    let paths = std::fs::read_dir(dir)?
+        .filter_map(|res| res.ok())
+        .map(|dir_entry| dir_entry.path())
+        .filter_map(|path| {
+            if path.extension().map_or(false, |ext| ext == "7z") {
+                Some(path)
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+    Ok(paths)
+}
+
+fn extract_archives(archives: &[PathBuf]) -> Result<(), io::Error> {
+    Ok(for archive in archives.iter() {
+        extract_single_archive(archive.as_path());
+    })
+}
+
+fn extract_single_archive(archive: &Path) {
+    decompress_file(archive, "./extracted").expect("I hope it works mdr");
 }
