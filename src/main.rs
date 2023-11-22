@@ -142,3 +142,11 @@ fn get_files(dir: &Path) -> Result<Vec<PathBuf>, io::Error> {
         .filter(|f| f.is_file())
         .collect())
 }
+
+fn get_archive_files(dir: &Path) -> Result<Vec<PathBuf>, io::Error> {
+    Ok(fs::read_dir(dir)?
+        .filter(|f| f.is_ok())
+        .map(|f| f.unwrap().path())
+        .filter(|f| f.ends_with("7z"))
+        .collect())
+}
