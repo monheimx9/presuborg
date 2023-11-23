@@ -1,0 +1,42 @@
+{
+  "fr-FR": {
+    "ext": ["fr", "fre", "fra", "fr-FR"],
+    "name": "Français (France)"
+  },
+  "en-US": {
+    "ext": ["en", "eng", "en-US"],
+    "name": "English (United States)"
+  },
+  "es-ES": {
+    "ext": ["es", "esp", "spa"],
+    "name": "Español (España)"
+  },
+  "es-419": {
+    "ext": ["es-419"],
+    "name": "Español (Latinoamérica)"
+  },
+  "de-DE": {
+    "ext": ["de", "deu", "ger", "de-DE"],
+    "name": "Deutsch (Germany)"
+  },
+  "it-IT": {
+    "ext": ["it", "ita", "it-IT"],
+    "name": "Italiano (Italia)"
+  },
+  "zh-CN": {
+    "ext": ["zh", "chi", "zh-CN"],
+    "name": "中文 (中国)"
+  },
+  "ar-SA": {
+    "ext": ["ar", "ara", "ar-SA"],
+    "name": "العربية (السعودية)"
+  },
+  "pt-BR": {
+    "ext": ["pt", "por", "pt-BR"],
+    "name": "Português (Brasil)"
+  },
+  "ru-RU": {
+    "ext": ["ru", "rus", "ru-RU"],
+    "name": "Русский (Россия)"
+  }
+}
