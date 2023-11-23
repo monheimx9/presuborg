@@ -40,25 +40,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let archives = get_archive_files(p)?;
     extract_archives(&archives)?;
 
-    let mut files2: Vec<String> = get_files(p)?
+    let mut files: Vec<String> = get_files(p)?
         .into_iter()
         .map(|s| s.to_string_lossy().into_owned())
         .collect();
-    for f in files2.iter() {
+    for f in files.iter() {
         println!("{f}");
     }
-    files2.sort();
-    for f in files2.iter() {
+    files.sort();
+    for f in files.iter() {
         println!("{f}");
     }
     // let _ = files2.into_iter().map(|s| println!("{s}"));
-    test_continuity(&files2)?;
-    let mut file_renamed = files2.clone();
+    test_continuity(&files)?;
+    let mut file_renamed = files.clone();
     rename_subs(&mut file_renamed, param);
 
     let mut episodes: HashMap<u8, FileName> = HashMap::new();
 
-    for (index, file) in files2.iter().enumerate() {
+    for (index, file) in files.iter().enumerate() {
         let old1 = file;
         let new1 = &file_renamed[index];
 
@@ -71,7 +71,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    for f in files2.iter() {
+    for f in files.iter() {
         println!("{f}");
     }
     let episodes_vec = Vec::from_iter(episodes.values());
