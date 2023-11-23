@@ -1,10 +1,12 @@
 use std::{
     collections::HashMap,
-    fs, io,
+    fs,
+    io::{self, Read},
     path::{Path, PathBuf},
 };
 
 use regex::{self, Regex};
+use serde::{Deserialize, Serialize};
 use sevenz_rust::decompress_file;
 
 #[derive(Debug, Clone)]
@@ -27,8 +29,35 @@ struct Episode<'a> {
     f_name: &'a FileName<'a>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct Language {
+    ext: Vec<String>,
+    name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct LanguageMap(HashMap<String, Language>);
+
+impl LanguageMap {
+    fn find_language_key(&self, extension: &str) -> Option<&str> {
+        for (key, language) in self.0.iter() {
+            if language.ext.contains(&extension.to_lowercase()) {
+                return Some(key);
+            }
+        }
+        None
+    }
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let p = Path::new("/home/monheim/Downloads/Bucchigire/");
+
+    let mut file = fs::File::open("langs.json").expect("Failed to open langs.json");
+    let mut json_data = String::new();
+    file.read_to_string(&mut json_data)
+        .expect("Failed to read langs.json");
+
+    let languages: LanguageMap = serde_json::from_str(&json_data).expect("Failed to parse JSON");
 
     let param = LesParam {
         rel_group: "Erai-raws",
