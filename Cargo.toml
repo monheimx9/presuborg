@@ -7,4 +7,6 @@ edition = "2021"
 
 [dependencies]
 regex = "0.2.11"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
 sevenz-rust = "0.5.3"
