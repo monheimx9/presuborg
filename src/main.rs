@@ -14,19 +14,12 @@ struct LesParam<'a> {
     rel_group: &'a str,
     tvdbid: &'a str,
     season: &'a str,
-    track_name: &'a str,
 }
 
 #[derive(Debug, Clone)]
 struct FileName<'a> {
     old: &'a str,
     new: &'a str,
-}
-
-#[derive(Debug, Clone)]
-struct Episode<'a> {
-    number: u8,
-    f_name: &'a FileName<'a>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -47,6 +40,9 @@ impl LanguageMap {
         }
         None
     }
+    fn get_track_name(&self, key: &str) -> Option<&str> {
+        self.0.get(key).map(|lang| lang.name.as_str())
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -57,13 +53,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     file.read_to_string(&mut json_data)
         .expect("Failed to read langs.json");
 
-    let languages: LanguageMap = serde_json::from_str(&json_data).expect("Failed to parse JSON");
-
     let param = LesParam {
         rel_group: "Erai-raws",
         tvdbid: "418183",
         season: "01",
-        track_name: "Français (France)",
     };
 
     let archives = get_archive_files(p)?;
