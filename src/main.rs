@@ -9,6 +9,8 @@ use regex::{self, Regex};
 use serde::{Deserialize, Serialize};
 use sevenz_rust::decompress_file;
 
+mod args;
+
 #[derive(Debug, Clone)]
 struct LesParam<'a> {
     rel_group: &'a str,
