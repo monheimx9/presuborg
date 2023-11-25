@@ -6,15 +6,14 @@ use clap::Parser;
 #[command(version = "1.0")]
 #[command(about = "Rename subs for Sonarr Sub Manager", long_about = None)]
 struct Cli {
-    #[arg(long)]
-    two: String,
+    #[arg(long, short = 'R')]
+    release_group: String,
     #[arg(long)]
     one: String,
 }
 
-fn get_args() {
+pub fn get_args() {
     let cli = Cli::parse();
 
-    println!("two: {:?}", cli.two);
     println!("one: {:?}", cli.one);
 }

@@ -48,6 +48,7 @@ impl LanguageMap {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let arg = args::get_args();
     let p = Path::new("/home/monheim/Downloads/Bucchigire/");
 
     let mut file = fs::File::open("langs.json").expect("Failed to open langs.json");
@@ -120,7 +121,7 @@ fn rename_subs(subs: &mut [String], p: LesParam) {
         make_missing_dirs(&diry);
         *sub = format!(
             "{}S{}.E{:0>2}.[{}]-[{}].{}.{}",
-            diry, p.season, i, p.rel_group, p.track_name, lang, ext
+            diry, p.season, i, p.rel_group, "Français (France)", lang, ext
         );
         i += 1;
     }
