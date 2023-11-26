@@ -5,15 +5,13 @@ use clap::Parser;
 #[command(author = "Jeremy D. <jeremy.delley@gmail.com>")]
 #[command(version = "1.0")]
 #[command(about = "Rename subs for Sonarr Sub Manager", long_about = None)]
-struct Cli {
+pub struct Cli {
     #[arg(long, short = 'R')]
     release_group: String,
     #[arg(long)]
-    one: String,
+    season: String,
 }
 
-pub fn get_args() {
-    let cli = Cli::parse();
-
-    println!("one: {:?}", cli.one);
+pub fn get_args() -> Cli {
+    Cli::parse()
 }

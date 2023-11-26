@@ -5,6 +5,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use presuborg::list_files;
 use regex::{self, Regex};
 use serde::{Deserialize, Serialize};
 use sevenz_rust::decompress_file;
@@ -48,6 +49,7 @@ impl LanguageMap {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    list_files();
     let arg = args::get_args();
     let p = Path::new("/home/monheim/Downloads/Bucchigire/");
 
