@@ -1,5 +1,11 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
+
+struct Episode {
+    number: u32,
+    lang: String,
+    file: String,
+}
 
 pub fn list_subtitles() -> Vec<PathBuf> {
     let wd: Vec<PathBuf> = WalkDir::new(".")
@@ -15,6 +21,14 @@ pub fn list_subtitles() -> Vec<PathBuf> {
         }
     }
     wd
+}
+
+fn parse_subtitles_into_episodes(pb: &[PathBuf]) -> Vec<Episode> {
+    unimplemented!()
+}
+
+fn get_lang_flag_from_filename(p: &Path) -> &str {
+    unimplemented!()
 }
 
 pub fn group_by_extension(pb: &[PathBuf]) -> Vec<Vec<PathBuf>> {
