@@ -5,7 +5,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use presuborg::list_files;
+use presuborg::list_subtitles;
 use regex::{self, Regex};
 use serde::{Deserialize, Serialize};
 use sevenz_rust::decompress_file;
@@ -49,7 +49,7 @@ impl LanguageMap {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    list_files();
+    list_subtitles();
     let arg = args::get_args();
     let p = Path::new("/home/monheim/Downloads/Bucchigire/");
 
@@ -58,6 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     file.read_to_string(&mut json_data)
         .expect("Failed to read langs.json");
 
+    let languages: LanguageMap = serde_json::from_str(&json_data).expect("Failed to parse JSON");
     let param = LesParam {
         rel_group: "Erai-raws",
         tvdbid: "418183",
