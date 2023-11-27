@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
-pub fn list_subtitles() {
+pub fn list_subtitles() -> Vec<PathBuf> {
     let wd: Vec<PathBuf> = WalkDir::new(".")
         .into_iter()
         .filter_map(|e| e.ok())
@@ -9,9 +9,18 @@ pub fn list_subtitles() {
         .map(|f| f.into_path())
         .collect();
 
-    for entry in wd {
+    for entry in wd.iter() {
         if entry.is_file() {
             println!("{}", entry.display());
         }
     }
+    wd
+}
+
+pub fn group_by_extension(pb: &[PathBuf]) -> Vec<Vec<PathBuf>> {
+    unimplemented!();
+}
+
+pub fn group_by_lang() {
+    unimplemented!();
 }

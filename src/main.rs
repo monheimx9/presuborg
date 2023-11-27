@@ -59,6 +59,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .expect("Failed to read langs.json");
 
     let languages: LanguageMap = serde_json::from_str(&json_data).expect("Failed to parse JSON");
+    let te = languages.find_language_key("fra");
+    let st = languages.get_track_name(te.unwrap());
     let param = LesParam {
         rel_group: "Erai-raws",
         tvdbid: "418183",
