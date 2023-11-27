@@ -6,10 +6,12 @@ use clap::Parser;
 #[command(version = "1.0")]
 #[command(about = "Rename subs for Sonarr Sub Manager", long_about = None)]
 pub struct Cli {
-    #[arg(long, short = 'R')]
+    #[arg(long, short = 'R', default_value = "Erai-raws")]
     release_group: String,
-    #[arg(long)]
+    #[arg(long, short, default_value = "S01")]
     season: String,
+    #[arg(long, short, default_value = "423800")]
+    tvdb: String,
 }
 
 pub fn get_args() -> Cli {
