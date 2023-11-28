@@ -6,7 +6,6 @@ use walkdir::WalkDir;
 
 use regex::{self, Regex};
 use serde::{Deserialize, Serialize};
-use sevenz_rust::decompress_file;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Language {
@@ -33,6 +32,7 @@ impl LanguageMap {
 struct Episode {
     number: u32,
     lang: String,
+    track_name: String,
     file: String,
 }
 
@@ -54,14 +54,26 @@ pub fn list_subtitles() -> Vec<PathBuf> {
 
 fn parse_subtitles_into_episodes(pb: &[PathBuf]) -> Vec<Episode> {
     let langs = get_languages();
+    let mut episodes: Vec<Episode> = Vec::new();
     for pe in pb {
-        let lang = get_lang_flag_from_filename(pe, &langs);
+        let l = get_lang_flag_from_filename(pe.to_str().unwrap());
+        let l = langs.find_language_key(&l).unwrap();
+        let tname = langs.get_track_name(l).unwrap().to_string();
+        let epnum = get_episode_number_from_filename(pe.to_str().unwrap());
+        episodes.push(Episode {
+            number: epnum,
+            lang: l.to_string(),
+            track_name: tname,
+            file: pe.to_str().unwrap().to_string(),
+        })
     }
-    unimplemented!()
+    episodes
 }
 
-fn get_lang_flag_from_filename<'a>(p: &Path, langs: &'a LanguageMap) -> &'a str {
-    unimplemented!()
+fn get_lang_flag_from_filename(fname: &str) -> String {
+    let re = Regex::new(r".+\.(\w{2,3}|\w{2}-\w{2,3})\.\w{3}$").unwrap();
+    let research = re.captures(fname).unwrap();
+    research[1].to_string()
 }
 
 fn get_episode_number_from_filename(fname: &str) -> u32 {
